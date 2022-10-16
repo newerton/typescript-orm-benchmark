@@ -19,7 +19,7 @@ export class Order extends Model {
     return "orders";
   }
 
-  static get relationMappings(): { items: RelationMapping } {
+  static get relationMappings(): { items: RelationMapping<Item> } {
     return {
       items: {
         relation: Model.ManyToManyRelation,

@@ -2,24 +2,23 @@
 
 ## Table of contents
 
-* [Introduction](#introduction)
-  + [Important concepts](#important-concepts)
-  + [Which libraries are we going to analize?](#which-libraries-are-we-going-to-analize)
-* [Case study](#case-study)
-  + [Database schema](#database-schema)
-  + [Endpoints](#endpoints)
-* [Results](#results)
-  + [Community](#community)
-  + [Documentation](#documentation)
-  + [TypeScript integration](#typescript-integration)
-  + [Performance](#performance)
-* [Developing](#developing)
-  + [Database configuration](#database-configuration)
-  + [Migrations](#migrations)
-  + [Starting app](#starting-app)
-  + [Debugging](#debugging)
-* [License](#license)
-
+- [Introduction](#introduction)
+  - [Important concepts](#important-concepts)
+  - [Which libraries are we going to analize?](#which-libraries-are-we-going-to-analize)
+- [Case study](#case-study)
+  - [Database schema](#database-schema)
+  - [Endpoints](#endpoints)
+- [Results](#results)
+  - [Community](#community)
+  - [Documentation](#documentation)
+  - [TypeScript integration](#typescript-integration)
+  - [Performance](#performance)
+- [Developing](#developing)
+  - [Database configuration](#database-configuration)
+  - [Migrations](#migrations)
+  - [Starting app](#starting-app)
+  - [Debugging](#debugging)
+- [License](#license)
 
 ## Introduction
 
@@ -39,6 +38,7 @@ This research objective isn't to claim which is the best ORM out there but to pr
 - [Knex](http://knexjs.org/): It's a very powerful query builder with transactions support. It hasn't all features an ORM may has but its performance it's quite better. Postgres, MSSQL, MySQL, MariaDB, SQLite3, Oracle, and Amazon Redshift.
 - [TypeORM](https://typeorm.io/#/): Its goal is to always support the latest JavaScript features and provide additional features that help you to develop any kind of application that uses databases. It supports MySQL, MariaDB, Postgres, CockroachDB, SQLite, Microsoft SQL Server, Oracle and [MongoDB NoSQL](https://github.com/typeorm/typeorm/blob/master/docs/active-record-data-mapper.md).
 - [Objection](https://vincit.github.io/objection.js/): It's build on Knex, thus supports the same databases. It has all the benefits of an SQL query builder but also a powerful set of tools for working with relations, for this it can be considered an ORM.
+- [Prisma ORM](https://www.prisma.io/): Prisma unlocks a new level of developer experience when working with databases thanks to its intuitive data model, automated migrations, type-safety & auto-completion.
 
 Other libraries were considered for this research but we discarded them, I’m going to do a special mention for the following:
 
@@ -79,14 +79,14 @@ In order to have where implement our study libraries we developed a simple [Expr
 
 ```
 # ⬇️ Get all orders
-# 
+#
 # If query string 'simple' is set to "true", then app will return
 # just the records from "orders" table. Otherwise, we are going to
 # receive orders array with its nested relations.
 GET /<orm_name>/orders?simple=<boolean>
 
 # ⬆️ Create orders
-# 
+#
 # This endpoint receives an array of orders and create them.
 # Orders could include nested relations, in that cases app should
 # hanlde it and create them too.
@@ -114,38 +114,46 @@ First, we can look at NPM packages and their metrics to have a clear image about
     <td>
       <a link="https://www.npmjs.com/package/sequelize" target="blank">Sequelize</a>
     </td>
-    <td>Jul 22, 2010</td>
-    <td>446,312</td>
-    <td>3,139</td>
+    <td>May 03, 2011</td>
+    <td>1,360,710</td>
+    <td>5,371</td>
   </tr>
   <tr align="center">
     <td>
       <a link="https://www.npmjs.com/package/knex" target="blank">Knex</a>
     </td>
-    <td>Dec 29, 2012</td>
-    <td>410,065</td>
-    <td>1,953</td>
+    <td>May 1, 2013</td>
+    <td>1,286,645</td>
+    <td>3,374</td>
   </tr>
   <tr align="center">
     <td>
       <a link="https://www.npmjs.com/package/typeorm" target="blank">TypeORM</a>
     </td>
-    <td>Feb 29, 2016</td>
-    <td>168,470</td>
-    <td>917</td>
+    <td>April 19, 2016</td>
+    <td>1,079,037</td>
+    <td>3,010</td>
   </tr>
   <tr align="center">
     <td>
       <a link="https://www.npmjs.com/package/objection" target="blank">Objection</a>
     </td>
-    <td>Apr 14, 2015</td>
-    <td>49,842</td>
-    <td>220</td>
+    <td>August 8, 2015</td>
+    <td>117,582</td>
+    <td>402</td>
+  </tr>
+  <tr align="center">
+    <td>
+      <a link="https://www.npmjs.com/package/prisma" target="blank">Prisma</a>
+    </td>
+    <td>June 3, 2015</td>
+    <td>846,538</td>
+    <td>183</td>
   </tr>
 </table>
 
 <p align="left">
-  <img src="assets/npm.png" alt="npm packages growth in last year">
+  <img src="assets/npm.png" alt="npm packages growth in last 2 years">
 </p>
 
 With this information, we can take some assumptions. First of all, clearly Sequelize is the most used library. It has been in the game for the longest time and its community haven’t stopped growth.
@@ -216,6 +224,16 @@ For that reason, we analysed the next points:
     <td>✅</td>
     <td>✅</td>
   </tr>
+  <tr align="center">
+    <td>
+      <a link="https://www.prisma.io/docs/getting-started" target="blank">Prisma</a>
+    </td>
+    <td>✅</td>
+    <td>✅</td>
+    <td>✅</td>
+    <td>✅</td>
+    <td>✅</td>
+  </tr>
 </table>
 
 Given all these libraries are used for thousands of people around the globe everyday is not strange that they document the basics on how to implement and start using they. But, for an advanced use, we need more information.
@@ -250,7 +268,7 @@ Remember Knex is just a query builder, so we don't define objects that represent
 
 TypeORM, name already gives us a hint. **It is a perfect partner for TypeScript** and is the one that exploits the most its capabilities. It allows you to write only one TypeScript Class and automatically generates all structure for your entity.
 
-Code complexity and quantity are greatly reduced, thus our entities definitions are much more cleaner than, for example, Sequelize. 
+Code complexity and quantity are greatly reduced, thus our entities definitions are much more cleaner than, for example, Sequelize.
 
 Decorators can seem strange at first sight, especially if you've never implement this concept before, but once you get used to them they are very easy to use.
 
@@ -286,7 +304,7 @@ autocannon "localhost:8080/<orm>/orders" \
   -i "./data.json" \
   -H "Content-Type: application/json"
 
-# where <orm> = knex|typeorm|sequelize|objection
+# where <orm> = knex|typeorm|sequelize|objection|prisma
 ```
 
 - `-c` The number of concurrent connections to use.
@@ -297,74 +315,15 @@ autocannon "localhost:8080/<orm>/orders" \
 
 Test Bench Configuration:
 
-- **OS**: macOs Catalina 10.15.1.
-- **CPU**: 2,2 GHz Quad-Core Intel Core i7.
-- **RAM**: 16 GB 1600 MHz DDR3.
-- **Node version**: v10.17.0.
+- **OS**: Windows 11 Pro - 21H2 (OS Build 22000.1098)
+- **CPU**: AMD Ryzen 7 5700G , 3801 Mhz, 8 Core(s), 16 Logical Processor(s)
+- **RAM**: 32 GB 3400 MHz DDR4.
+- **Node version**: v16.15.0.
 
-#### GET simple
+---
+## Benchmark 2022-10-10
 
-<table>
-  <tr>
-    <th>Library</th>
-    <th>Latency avg</th>
-    <th>Latency max</th>
-    <th>Req/Sec avg</th>
-    <th>Req/Sec min</th>
-    <th>Bytes/Sec avg</th>
-    <th>Bytes/Sec min</th>
-  </tr>
-  <tr align="center">
-    <td>
-      <a>Sequelize</a>
-    </td>
-    <td>2201.91 ms</td>
-    <td>2647.18 ms</td>
-    <td>42.9</td>
-    <td>29</td>
-    <td>5.83 MB</td>
-    <td>3.94 MB</td>
-  </tr>
-  <tr align="center">
-    <td>
-      <a>Knex 🥇</a>
-    </td>
-    <td>1276.52 ms ms</td>
-    <td>1647.52 ms</td>
-    <td>75.91</td>
-    <td>58</td>
-    <td>10.3 MB</td>
-    <td>7.88 MB</td>
-  </tr>
-  <tr align="center">
-    <td>
-      <a>TypeORM 🥈</a>
-    </td>
-    <td>1423.56 ms</td>
-    <td>1685.29 ms</td>
-    <td>67.8</td>
-    <td>53</td>
-    <td>9.21 MB</td>
-    <td>7.2 MB</td>
-  </tr>
-  <tr align="center">
-    <td>
-      <a>Objection 🥉</a>
-    </td>
-    <td>1466.76 ms</td>
-    <td>1808.73 ms</td>
-    <td>65.66</td>
-    <td>47</td>
-    <td>8.92 MB</td>
-    <td>6.39 MB</td>
-  </tr>
-</table>
-
-<p align="center">
-  <img src="assets/performance-simple.png" alt="graphs for GET performance">
-</p>
-
-#### GET nested object
+#### GET simple (31198 orders)
 
 <table>
   <tr>
@@ -380,51 +339,138 @@ Test Bench Configuration:
     <td>
       <a>Sequelize</a>
     </td>
-    <td>5697.71 ms</td>
-    <td>7124.39 ms</td>
-    <td>14.75</td>
-    <td>6</td>
-    <td>5.1 MB</td>
-    <td>2.07 MB</td>
+    <td>5196.42 ms</td>
+    <td>9889 ms</td>
+    <td>2.05</td>
+    <td>3</td>
+    <td>4.38 MB</td>
+    <td>6.41 MB</td>
   </tr>
+  <tr><td colspan="7">300 requests in 20.22s, 87.6 MB read - 159 errors (159 timeouts)</td></tr>
   <tr align="center">
     <td>
-      <a>Knex 🥇</a>
+      <a>Knex</a>
     </td>
-    <td>2156.48 ms</td>
-    <td>2471.32 ms</td>
-    <td>43.9</td>
-    <td>35</td>
-    <td>11 MB</td>
-    <td>8.8 MB</td>
+    <td>5153.94 ms</td>
+    <td>9855 ms</td>
+    <td>3.6</td>
+    <td>5</td>
+    <td>7.69 MB</td>
+    <td>10.7 MB</td>
   </tr>
+  <tr><td colspan="7">300 requests in 20.18s, 154 MB read - 128 errors (128 timeouts)</td></tr>
   <tr align="center">
     <td>
-      <a>TypeORM 🥉</a>
+      <a>TypeORM</a>
     </td>
-    <td>2917.68 ms</td>
-    <td>4586.61 ms</td>
-    <td>31.9</td>
-    <td>14</td>
-    <td>8.02 MB</td>
-    <td>3.52 MB</td>
+    <td>5234.73 ms</td>
+    <td>9903 ms</td>
+    <td>2.55</td>
+    <td>3</td>
+    <td>5.45 MB</td>
+    <td>6.41 MB</td>
   </tr>
+  <tr><td colspan="7">300 requests in 20.21s, 109 MB read - 149 errors (149 timeouts)</td></tr>
   <tr align="center">
     <td>
-      <a>Objection 🥈</a>
+      <a>Objection</a>
     </td>
-    <td>2902.18 ms</td>
-    <td>3672.11 ms</td>
-    <td>32.1</td>
-    <td>15</td>
-    <td>8.07 MB</td>
-    <td>3.77 MB</td>
+    <td>5166.25 ms</td>
+    <td>9849 ms</td>
+    <td>2.9</td>
+    <td>4</td>
+    <td>6.19 MB</td>
+    <td>8.54 MB</td>
   </tr>
+  <tr><td colspan="7">300 requests in 20.21s, 124 MB read - 142 errors (142 timeouts)</td></tr>
+  <tr align="center">
+    <td>
+      <a>Prisma</a>
+    </td>
+    <td>6743.49 ms</td>
+    <td>14609 ms</td>
+    <td>11.9</td>
+    <td>4</td>
+    <td>25.4 MB</td>
+    <td>8.54 MB</td>
+  </tr>
+  <tr><td colspan="7">361 requests in 20.21s, 508 MB read - 23 errors (0 timeouts)</td></tr>
 </table>
 
-<p align="center">
-  <img src="assets/performance-get.png" alt="graphs for GET performance">
-</p>
+
+#### GET nested object (31198 orders)
+
+<table>
+  <tr>
+    <th>Library</th>
+    <th>Latency avg</th>
+    <th>Latency max</th>
+    <th>Req/Sec avg</th>
+    <th>Req/Sec min</th>
+    <th>Bytes/Sec avg</th>
+    <th>Bytes/Sec min</th>
+  </tr>
+  <tr align="center">
+    <td>
+      <a>Sequelize</a>
+    </td>
+    <td>5556.5 ms</td>
+    <td>9923 ms</td>
+    <td>0.7</td>
+    <td>1</td>
+    <td>3.85 MB</td>
+    <td>5.49 MB</td>
+  </tr>
+  <tr><td colspan="7">300 requests in 20.23s, 76.9 MB read - 186 errors (186 timeouts)</td></tr>
+  <tr align="center">
+    <td>
+      <a>Knex</a>
+    </td>
+    <td>5423.86 ms</td>
+    <td>9901 ms</td>
+    <td>2.5</td>
+    <td>1</td>
+    <td>9.9 MB</td>
+    <td>3.96 MB</td>
+  </tr>
+  <tr><td colspan="7">300 requests in 20.19s, 198 MB read - 150 errors (150 timeouts)</td></tr>
+  <tr align="center">
+    <td>
+      <a>TypeORM</a>
+    </td>
+    <td>5338 ms</td>
+    <td>9825 ms</td>
+    <td>1.35</td>
+    <td>1</td>
+    <td>5.35 MB</td>
+    <td>3.96 MB</td>
+  </tr>
+  <tr><td colspan="7">300 requests in 20.22s, 107 MB read - 173 errors (173 timeouts)</td></tr>
+  <tr align="center">
+    <td>
+      <a>Objection</a>
+    </td>
+    <td>5372.15 ms</td>
+    <td>9980 ms</td>
+    <td>1.7</td>
+    <td>2</td>
+    <td>6.73 MB</td>
+    <td>7.92 MB</td>
+  </tr>
+  <tr><td colspan="7">300 requests in 20.21s, 135 MB read - 166 errors (166 timeouts)</td></tr>
+  <tr align="center">
+    <td>
+      <a>Prisma</a>
+    </td>
+    <td>54.27 ms</td>
+    <td>135 ms</td>
+    <td>1824.4</td>
+    <td>1164</td>
+    <td>792 kB</td>
+    <td>505 kB</td>
+  </tr>
+  <tr><td colspan="7">37k requests in 20.04s, 15.8 MB read</td></tr>
+</table>
 
 #### POST nested object
 
@@ -440,53 +486,68 @@ Test Bench Configuration:
   </tr>
   <tr align="center">
     <td>
-      <a>Sequelize 🥉</a>
+      <a>Sequelize</a>
     </td>
-    <td>882.75 ms</td>
-    <td>1304.18 ms</td>
-    <td>111.2</td>
-    <td>70</td>
-    <td>38.9 kB</td>
-    <td>24.3 kB</td>
+    <td>175.38 ms</td>
+    <td>403 ms</td>
+    <td>566.85</td>
+    <td>365</td>
+    <td>212 kB</td>
+    <td>136 kB</td>
   </tr>
+  <tr><td colspan="7">11k requests in 20.06s, 4.24 MB read - 11437 orders</td></tr>
   <tr align="center">
     <td>
-      <a>Knex 🥈</a>
+      <a>Knex</a>
     </td>
-    <td>693.45 ms</td>
-    <td>1166.97 ms</td>
-    <td>141.95</td>
-    <td>91</td>
-    <td>50.4 kB</td>
-    <td>32.2 kB</td>
+    <td>166.73 ms</td>
+    <td>585 ms</td>
+    <td>596.1</td>
+    <td>298</td>
+    <td>226 kB</td>
+    <td>112 kB</td>
   </tr>
+  <tr><td colspan="7">12k requests in 20.05s, 4.52 MB read - 12022 orders</td></tr>
   <tr align="center">
     <td>
-      <a>TypeORM 🥇</a>
+      <a>TypeORM</a>
     </td>
-    <td>477.26 ms</td>
-    <td>2507.41 ms</td>
-    <td>205.95</td>
-    <td>36</td>
-    <td>65.2 kB</td>
-    <td>11.2 kB</td>
+    <td>218.02 ms</td>
+    <td>812 ms</td>
+    <td>456.15</td>
+    <td>143</td>
+    <td>155 kB</td>
+    <td>48.1 kB</td>
   </tr>
+  <tr><td colspan="7">9k requests in 20.06s, 3.1 MB read - 9223 orders</td></tr>
   <tr align="center">
     <td>
       <a>Objection</a>
     </td>
-    <td>906.97 ms</td>
-    <td>1322.14 ms</td>
-    <td>108</td>
-    <td>70</td>
-    <td>34.1 kB</td>
-    <td>21.9 kB</td>
+    <td>240.74 ms</td>
+    <td>585 ms</td>
+    <td>412.95</td>
+    <td>206</td>
+    <td>140 kB</td>
+    <td>69.4 kB</td>
   </tr>
+  <tr><td colspan="7">8k requests in 20.06s, 2.81 MB read - 8359 orders</td></tr>
+  <tr align="center">
+    <td>
+      <a>Prisma</a>
+    </td>
+    <td>63.93 ms</td>
+    <td>105 ms</td>
+    <td>1550.4</td>
+    <td>1199</td>
+    <td>486 kB</td>
+    <td>374 kB</td>
+  </tr>
+  <tr><td colspan="7">31k requests in 20.04s, 9.73 MB read - 31108 orders</td></tr>
 </table>
 
-<p align="center">
-  <img src="assets/performance-post.png" alt="graphs for post performance">
-</p>
+
+--- 
 
 
 ## Developing

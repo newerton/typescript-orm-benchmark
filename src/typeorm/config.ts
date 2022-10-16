@@ -1,16 +1,17 @@
-import 'dotenv/config';
+import "dotenv/config";
 
-import path from 'path';
+import path from "path";
+import { DataSourceOptions } from "typeorm";
 
-const configuration = {
-  type: 'postgres',
-  port: process.env.DB_PORT,
+const configuration: DataSourceOptions = {
+  type: "postgres",
+  port: +(process.env.DB_PORT || 5432),
   host: process.env.DB_HOST,
-  username: process.env.DB_USER,
+  username: process.env.DB_USERNAME,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
-  entities: [path.resolve(__dirname, './entities/*')],
-  logging: true
-} as import('typeorm').ConnectionOptions;
+  entities: [path.resolve(__dirname, "./entities/*")],
+  logging: true,
+};
 
 export default configuration;

@@ -46,7 +46,7 @@ router.post('/orders', async (req: Request, res: Response, next: NextFunction) =
         .insert(payload.items)
         .returning('*');
       await trx(TABLES.ORDER_ITEM)
-        .insert(items.map(item => ({
+        .insert(items.map((item: any) => ({
           itemId: item.id,
           orderId: order.id
         })))
