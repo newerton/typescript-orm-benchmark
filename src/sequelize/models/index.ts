@@ -17,7 +17,7 @@ export interface DbInterface extends ModelsInterface {
 const { database, username, password, ...params } = config;
 const sequelize = new Sequelize(database, username, password, params);
 
-const models: ModelsInterface = {
+const models: any = {
   Order: Order.OrderFactory(sequelize, Sequelize),
   Item: Item.ItemFactory(sequelize, Sequelize)
 }

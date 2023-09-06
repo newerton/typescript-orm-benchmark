@@ -1,4 +1,3 @@
-import { PrismaClient } from "@prisma/client";
 import { Router, Request, Response, NextFunction } from "express";
 
 import prisma from "./db";

@@ -15,5 +15,31 @@ services:
       - POSTGRES_PASSWORD=docker
       - POSTGRES_DB=ormcomparation
 
+  # immudb:
+  #   image: codenotary/immudb:1.5.0
+  #   container_name: orm-bench-immudb
+  #   ports:
+  #     - 3322:3322
+  #     - 9497:9497
+  #     - 8080:8080
+  #     - 5432:5432
+  #   environment:
+  #     - IMMUDB_ADDRESS=0.0.0.0
+  #   volumes:
+  #     - 'immudb-data:/var/lib/immudb'
+
+  # immugw:
+  #   image: 'codenotary/immugw:latest'
+  #   container_name: orm-bench-immugw
+  #   ports:
+  #     - '3323:3323'
+  #   environment:
+  #     - IMMUGW_ADDRESS=0.0.0.0
+  #     - IMMUGW_IMMUDB_ADDRESS=immudb
+  #   depends_on:
+  #     - immudb
+
 volumes:
   db_data: {}
+  immudb-data:
+    driver: local
