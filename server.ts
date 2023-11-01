@@ -31,9 +31,9 @@ app.use(
   })
 );
 
+app.use("/knex", knex);
 app.use("/sequelize", sequelize);
 app.use("/objection", objection);
-app.use("/knex", knex);
 app.use("/prisma", prisma);
 
 Promise.resolve()

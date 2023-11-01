@@ -7,24 +7,31 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model items {
-  id           Int            @id @default(autoincrement())
-  name         String?        @db.VarChar(255)
-  value        Float?         @db.Real
-  orders_items orders_items[]
+model Orders {
+  id   Int       @id @default(autoincrement())
+  user String?   @db.VarChar(255)
+  date DateTime? @default(now()) @db.Timestamptz(6)
+
+  items OrderItems[]
+
+  @@map("orders")
 }
 
-model orders {
-  id           Int            @id @default(autoincrement())
-  user         String?        @db.VarChar(255)
-  date         DateTime?      @default(now()) @db.Timestamptz(6)
-  orders_items orders_items[]
+model Items {
+  id     Int          @id @default(autoincrement())
+  name   String?      @db.VarChar(255)
+  value  Float?       @db.Real
+  orders OrderItems[]
+
+  @@map("items")
 }
 
-model orders_items {
+model OrderItems {
   id       Int     @id @default(autoincrement())
   order_id Int?
   item_id  Int?
-  items    items?  @relation(fields: [item_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "orders_items_item_id_foreign")
-  orders   orders? @relation(fields: [order_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "orders_items_order_id_foreign")
+  items    Items?  @relation(fields: [item_id], references: [id], onDelete: Cascade)
+  orders   Orders? @relation(fields: [order_id], references: [id], onDelete: Cascade)
+
+  @@map("orders_items")
 }
