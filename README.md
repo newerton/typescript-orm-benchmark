@@ -39,6 +39,7 @@ This research objective isn't to claim which is the best ORM out there but to pr
 - [TypeORM](https://typeorm.io/#/): Its goal is to always support the latest JavaScript features and provide additional features that help you to develop any kind of application that uses databases. It supports MySQL, MariaDB, Postgres, CockroachDB, SQLite, Microsoft SQL Server, Oracle and [MongoDB NoSQL](https://github.com/typeorm/typeorm/blob/master/docs/active-record-data-mapper.md).
 - [Objection](https://vincit.github.io/objection.js/): It's build on Knex, thus supports the same databases. It has all the benefits of an SQL query builder but also a powerful set of tools for working with relations, for this it can be considered an ORM.
 - [Prisma ORM](https://www.prisma.io/): Prisma unlocks a new level of developer experience when working with databases thanks to its intuitive data model, automated migrations, type-safety & auto-completion.
+- [Drizzle ORM](https://orm.drizzle.team/): Drizzle ORM is a headless TypeScript ORM with a head 🐲. It looks and feels simple, performs on day 1000 of your project, lets you do things your way, and is there when you need it..
 
 Other libraries were considered for this research but we discarded them, I’m going to do a special mention for the following:
 
@@ -150,6 +151,14 @@ First, we can look at NPM packages and their metrics to have a clear image about
     <td>846,538</td>
     <td>183</td>
   </tr>
+  <tr align="center">
+    <td>
+      <a link="https://www.npmjs.com/package/drizzle-orm" target="blank">Drizzle ORM</a>
+    </td>
+    <td>September 9, 2021</td>
+    <td>92,499</td>
+    <td>59</td>
+  </tr>
 </table>
 
 <p align="left">
@@ -227,6 +236,16 @@ For that reason, we analysed the next points:
   <tr align="center">
     <td>
       <a link="https://www.prisma.io/docs/getting-started" target="blank">Prisma</a>
+    </td>
+    <td>✅</td>
+    <td>✅</td>
+    <td>✅</td>
+    <td>✅</td>
+    <td>✅</td>
+  </tr>
+  <tr align="center">
+    <td>
+      <a link="https://orm.drizzle.team/docs/overview" target="blank">Drizzle</a>
     </td>
     <td>✅</td>
     <td>✅</td>
@@ -318,12 +337,13 @@ Test Bench Configuration:
 - **OS**: Windows 11 Pro - 21H2 (OS Build 22000.1098)
 - **CPU**: AMD Ryzen 7 5700G , 3801 Mhz, 8 Core(s), 16 Logical Processor(s)
 - **RAM**: 32 GB 3400 MHz DDR4.
-- **Node version**: v16.15.0.
+- **Node version**: v18.15.0.
 
 ---
+
 ## Benchmark 2022-10-10
 
-#### GET simple (31198 orders)
+#### GET simple (15000 orders)
 
 <table>
   <tr>
@@ -336,69 +356,58 @@ Test Bench Configuration:
     <th>Bytes/Sec min</th>
   </tr>
   <tr align="center">
-    <td>
-      <a>Sequelize</a>
-    </td>
-    <td>5196.42 ms</td>
-    <td>9889 ms</td>
-    <td>2.05</td>
-    <td>3</td>
-    <td>4.38 MB</td>
-    <td>6.41 MB</td>
+    <td><a>Sequelize 6.35.1</a></td>
+    <td>5729.64 ms</td>
+    <td>6955 ms</td>
+    <td>14.65</td>
+    <td>13</td>
+    <td>17.2 MB</td>
+    <td>15.3 MB</td>
   </tr>
-  <tr><td colspan="7">300 requests in 20.22s, 87.6 MB read - 159 errors (159 timeouts)</td></tr>
+  <tr><td colspan="7">393 requests in 20.22s, 345 MB read</td></tr>
   <tr align="center">
-    <td>
-      <a>Knex</a>
-    </td>
-    <td>5153.94 ms</td>
-    <td>9855 ms</td>
-    <td>3.6</td>
-    <td>5</td>
-    <td>7.69 MB</td>
-    <td>10.7 MB</td>
+    <td><a>Knex 3.0.1</a></td>
+    <td>2548.76 ms</td>
+    <td>2889 ms</td>
+    <td>36.85</td>
+    <td>31</td>
+    <td>43.4 MB</td>
+    <td>36.5 MB</td>
   </tr>
-  <tr><td colspan="7">300 requests in 20.18s, 154 MB read - 128 errors (128 timeouts)</td></tr>
+  <tr><td colspan="7">837 requests in 20.15s, 867 MB read</td></tr>
   <tr align="center">
-    <td>
-      <a>TypeORM</a>
-    </td>
-    <td>5234.73 ms</td>
-    <td>9903 ms</td>
-    <td>2.55</td>
-    <td>3</td>
-    <td>5.45 MB</td>
-    <td>6.41 MB</td>
+    <td><a>TypeORM 0.3.17</a></td>
+    <td>4032.2 ms</td>
+    <td>4770 ms</td>
+    <td>22.3</td>
+    <td>19</td>
+    <td>26.2 MB</td>
+    <td>22.4 MB</td>
   </tr>
-  <tr><td colspan="7">300 requests in 20.21s, 109 MB read - 149 errors (149 timeouts)</td></tr>
+  <tr><td colspan="7">546 requests in 20.22s, 525 MB read</td></tr>
   <tr align="center">
-    <td>
-      <a>Objection</a>
-    </td>
-    <td>5166.25 ms</td>
-    <td>9849 ms</td>
-    <td>2.9</td>
-    <td>4</td>
-    <td>6.19 MB</td>
-    <td>8.54 MB</td>
+    <td><a>Objection 3.1.3</a></td>
+    <td>2771.38 ms</td>
+    <td>3164 ms</td>
+    <td>33.75</td>
+    <td>28</td>
+    <td>39.7 MB</td>
+    <td>32.9 MB</td>
   </tr>
-  <tr><td colspan="7">300 requests in 20.21s, 124 MB read - 142 errors (142 timeouts)</td></tr>
+  <tr><td colspan="7">775 requests in 20.19s, 794 MB read</td></tr>
   <tr align="center">
-    <td>
-      <a>Prisma</a>
-    </td>
-    <td>6743.49 ms</td>
-    <td>14609 ms</td>
-    <td>11.9</td>
-    <td>4</td>
-    <td>25.4 MB</td>
-    <td>8.54 MB</td>
+    <td><a>Prisma 5.6.0</a></td>
+    <td>4682.49 ms</td>
+    <td>7081 ms</td>
+    <td>18.9</td>
+    <td>6</td>
+    <td>21.7 MB</td>
+    <td>6.87 MB</td>
   </tr>
-  <tr><td colspan="7">361 requests in 20.21s, 508 MB read - 23 errors (0 timeouts)</td></tr>
+  <tr><td colspan="7">478 requests in 20.21s, 433 MB read</td></tr>
 </table>
 
-
-#### GET nested object (31198 orders)
+#### GET nested object (15000 orders)
 
 <table>
   <tr>
@@ -411,9 +420,7 @@ Test Bench Configuration:
     <th>Bytes/Sec min</th>
   </tr>
   <tr align="center">
-    <td>
-      <a>Sequelize</a>
-    </td>
+    <td><a>Sequelize</a></td>
     <td>5556.5 ms</td>
     <td>9923 ms</td>
     <td>0.7</td>
@@ -423,21 +430,17 @@ Test Bench Configuration:
   </tr>
   <tr><td colspan="7">300 requests in 20.23s, 76.9 MB read - 186 errors (186 timeouts)</td></tr>
   <tr align="center">
-    <td>
-      <a>Knex</a>
-    </td>
-    <td>5423.86 ms</td>
-    <td>9901 ms</td>
-    <td>2.5</td>
-    <td>1</td>
+    <td><a>Knex</a></td>
+    <td>2548.86 ms</td>
+    <td>2889 ms</td>
+    <td>36.85</td>
+    <td>31</td>
     <td>9.9 MB</td>
     <td>3.96 MB</td>
   </tr>
   <tr><td colspan="7">300 requests in 20.19s, 198 MB read - 150 errors (150 timeouts)</td></tr>
   <tr align="center">
-    <td>
-      <a>TypeORM</a>
-    </td>
+    <td><a>TypeORM</a></td>
     <td>5338 ms</td>
     <td>9825 ms</td>
     <td>1.35</td>
@@ -447,9 +450,7 @@ Test Bench Configuration:
   </tr>
   <tr><td colspan="7">300 requests in 20.22s, 107 MB read - 173 errors (173 timeouts)</td></tr>
   <tr align="center">
-    <td>
-      <a>Objection</a>
-    </td>
+    <td><a>Objection</a></td>
     <td>5372.15 ms</td>
     <td>9980 ms</td>
     <td>1.7</td>
@@ -459,9 +460,7 @@ Test Bench Configuration:
   </tr>
   <tr><td colspan="7">300 requests in 20.21s, 135 MB read - 166 errors (166 timeouts)</td></tr>
   <tr align="center">
-    <td>
-      <a>Prisma</a>
-    </td>
+    <td><a>Prisma</a></td>
     <td>54.27 ms</td>
     <td>135 ms</td>
     <td>1824.4</td>
@@ -485,9 +484,7 @@ Test Bench Configuration:
     <th>Bytes/Sec min</th>
   </tr>
   <tr align="center">
-    <td>
-      <a>Sequelize</a>
-    </td>
+    <td><a>Sequelize</a></td>
     <td>175.38 ms</td>
     <td>403 ms</td>
     <td>566.85</td>
@@ -497,9 +494,7 @@ Test Bench Configuration:
   </tr>
   <tr><td colspan="7">11k requests in 20.06s, 4.24 MB read - 11437 orders</td></tr>
   <tr align="center">
-    <td>
-      <a>Knex</a>
-    </td>
+    <td><a>Knex</a></td>
     <td>166.73 ms</td>
     <td>585 ms</td>
     <td>596.1</td>
@@ -509,9 +504,7 @@ Test Bench Configuration:
   </tr>
   <tr><td colspan="7">12k requests in 20.05s, 4.52 MB read - 12022 orders</td></tr>
   <tr align="center">
-    <td>
-      <a>TypeORM</a>
-    </td>
+    <td><a>TypeORM</a></td>
     <td>218.02 ms</td>
     <td>812 ms</td>
     <td>456.15</td>
@@ -521,9 +514,7 @@ Test Bench Configuration:
   </tr>
   <tr><td colspan="7">9k requests in 20.06s, 3.1 MB read - 9223 orders</td></tr>
   <tr align="center">
-    <td>
-      <a>Objection</a>
-    </td>
+    <td><a>Objection</a></td>
     <td>240.74 ms</td>
     <td>585 ms</td>
     <td>412.95</td>
@@ -533,22 +524,28 @@ Test Bench Configuration:
   </tr>
   <tr><td colspan="7">8k requests in 20.06s, 2.81 MB read - 8359 orders</td></tr>
   <tr align="center">
-    <td>
-      <a>Prisma</a>
-    </td>
-    <td>63.93 ms</td>
-    <td>105 ms</td>
-    <td>1550.4</td>
-    <td>1199</td>
-    <td>486 kB</td>
-    <td>374 kB</td>
+    <td><a>Prisma</a></td>
+    <td>76.29 ms</td>
+    <td>107 ms</td>
+    <td>1300.6</td>
+    <td>1115</td>
+    <td>408 kB</td>
+    <td>350 kB</td>
   </tr>
-  <tr><td colspan="7">31k requests in 20.04s, 9.73 MB read - 31108 orders</td></tr>
+  <tr><td colspan="7">26k requests in 20.04s, 8.17 MB read - 26112 orders</td></tr>
+  <tr align="center">
+    <td><a>Drizzle</a></td>
+    <td>1516.16 ms</td>
+    <td>1643 ms</td>
+    <td>65</td>
+    <td>31</td>
+    <td>17.4 kB</td>
+    <td>8.31 kB</td>
+  </tr>
+  <tr><td colspan="7">1k requests in 20.19s, 348 kB read - 1400 orders</td></tr>
 </table>
 
-
---- 
-
+---
 
 ## Developing
 

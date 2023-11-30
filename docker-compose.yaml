@@ -1,19 +1,63 @@
-version: '3'
+version: '3.7'
 
 services:
   postgres:
-    image: postgres:14
+    image: postgres:16.1
     container_name: orm-bench-db
     restart: always
     tty: true
     volumes:
-      - db_data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
     ports:
       - '5432:5432'
     environment:
       - POSTGRES_USER=docker
       - POSTGRES_PASSWORD=docker
       - POSTGRES_DB=ormcomparation
+    tmpfs:
+      - /var/lib/postgresql
+
+  mongodb:
+    image: mongo:latest
+    container_name: orm-bench-mongodb
+    hostname: localhost
+    restart: always
+    tty: true
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=docker
+      - MONGO_INITDB_ROOT_PASSWORD=docker
+      - MONGO_INITDB_DATABASE=ormcomparation
+      - MONGODB_CLIENT_EXTRA_FLAGS=--authenticationDatabase=admin
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    healthcheck:
+      test: "exit 0"
+    networks:
+      - orm-bench-network
+
+  mongo-express:
+    image: mongo-express
+    container_name: orm-bench-mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=mongodb
+      - ME_CONFIG_MONGODB_AUTH_USERNAME=docker
+      - ME_CONFIG_MONGODB_AUTH_PASSWORD=docker
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=docker
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=docker
+    networks:
+      - orm-bench-network
+    depends_on:
+      - mongodb
 
 volumes:
-  db_data: {}
+  postgres_data: {}
+  mongodb_data: {}
+
+networks:
+  orm-bench-network:
+    driver: bridge
