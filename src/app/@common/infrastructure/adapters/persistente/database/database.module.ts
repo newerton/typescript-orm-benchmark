@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 
-import { PrismaDatabaseAdapter } from './prisma/prisma-database.adapter';
+import { PrismaDatabaseAdapter } from './prisma';
 
 @Module({
   providers: [PrismaDatabaseAdapter],

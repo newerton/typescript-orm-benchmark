@@ -5,6 +5,7 @@ import { applySwagger } from '@app/@common/application/config';
 import { ApiServerConfig } from '@core/@shared/infrastructure/config/env';
 
 import { MainModule } from './main.module';
+import { MainService } from './main.service';
 
 const logger = new Logger('Main');
 
@@ -21,4 +22,4 @@ async function bootstrap() {
     );
   });
 }
-bootstrap();
+MainService.clusterize(bootstrap);

@@ -13,6 +13,8 @@ model Orders {
   created_at DateTime @default(now())
 
   ordersItems OrdersItems[]
+
+  @@map("orders")
 }
 
 model Items {
@@ -21,6 +23,8 @@ model Items {
   value Float  @db.Real()
 
   ordersItems OrdersItems[]
+
+  @@map("items")
 }
 
 model OrdersItems {
@@ -30,4 +34,6 @@ model OrdersItems {
 
   items  Items?  @relation(fields: [item_id], references: [id], onDelete: Cascade)
   orders Orders? @relation(fields: [order_id], references: [id], onDelete: Cascade)
+
+  @@map("orders_items")
 }
