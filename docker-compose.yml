@@ -1,0 +1,19 @@
+version: '3.7'
+services:
+  postgres:
+    image: postgres:16.1
+    container_name: orm-benchmark-postgres
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres:/var/lib/postgresql/data
+      - .docker/database/postgres/initdb/:/docker-entrypoint-initdb.d
+    environment:
+      - POSTGRES_MULTIPLE_DATABASES=orm_benchmark,orm_benchmark_test
+      - POSTGRES_USER=docker
+      - POSTGRES_PASSWORD=docker
+    tmpfs:
+      - /var/lib/postgresql
+volumes:
+  postgres:
+    driver: local
