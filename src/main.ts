@@ -23,3 +23,4 @@ async function bootstrap() {
   });
 }
 MainService.clusterize(bootstrap);
+// bootstrap();

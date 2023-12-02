@@ -1,6 +1,7 @@
 import { Module, Provider } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
+import { SequelizeModule as NestJsSequelizeModule } from '@nestjs/sequelize';
 import { TypeOrmModule as NestJsTypeOrmModule } from '@nestjs/typeorm';
 
 import {
@@ -8,8 +9,10 @@ import {
   ZodValidationExceptionFilter,
 } from '@app/@common/application/exceptions/filter';
 import { HttpLoggingInterceptor } from '@app/@common/application/interceptors';
+import { sequelizeOptions } from '@app/@common/infrastructure/adapters/persistente/database/sequelize';
 import { dataSourceOptions } from '@app/@common/infrastructure/adapters/persistente/database/typeorm';
 import { PrismaModule } from '@app/prisma/prisma.module';
+import { SequelizeModule } from '@app/sequelize/sequelize.module';
 import { TypeOrmModule } from '@app/typeorm/typeorm.module';
 import { ApiServerConfig } from '@core/@shared/infrastructure/config/env';
 
@@ -39,7 +42,9 @@ if (ApiServerConfig.LOG_ENABLE) {
       isGlobal: true,
     }),
     NestJsTypeOrmModule.forRoot(dataSourceOptions),
+    NestJsSequelizeModule.forRoot(sequelizeOptions),
     PrismaModule,
+    SequelizeModule,
     TypeOrmModule,
   ],
   controllers: [MainController],
