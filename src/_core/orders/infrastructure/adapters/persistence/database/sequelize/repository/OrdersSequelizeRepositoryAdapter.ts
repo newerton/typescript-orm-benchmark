@@ -2,6 +2,7 @@ import { Op, WhereOptions } from 'sequelize';
 import { Repository } from 'sequelize-typescript';
 
 import { Optional } from '@core/@shared/domain/type';
+import { SequelizeItems } from '@core/items/infrastructure/adapters/persistence/database/sequelize/entities';
 import { Orders } from '@core/orders/domain/entity';
 import {
   OrdersRepository,
@@ -19,9 +20,7 @@ export class OrdersSequelizeRepositoryAdapter implements OrdersRepository {
 
   async create(payload: Orders): Promise<OrdersRepositoryOutput> {
     const orm: SequelizeOrders = SequelizeOrdersMapper.toOrmEntity(payload);
-    return this.repository.create({
-      ...orm,
-    });
+    return this.repository.create(orm.dataValues);
   }
 
   async update(id: string, payload: Orders): Promise<OrdersRepositoryOutput> {
@@ -52,8 +51,6 @@ export class OrdersSequelizeRepositoryAdapter implements OrdersRepository {
     limit: number,
     filter: OrdersRepositoryFilter,
   ): Promise<OrdersRepositoryCountOutput> {
-    let domainEntities: Optional<Orders[]>;
-
     const skip = limit * (page - 1);
     const take = limit;
 
@@ -62,17 +59,14 @@ export class OrdersSequelizeRepositoryAdapter implements OrdersRepository {
     const ormEntity: Optional<SequelizeOrders[]> =
       await this.repository.findAll({
         where,
+        include: [SequelizeItems],
         offset: skip,
         limit: take,
         order: [['created_at', 'DESC']],
       });
     const count = await this.repository.count(where);
 
-    if (ormEntity) {
-      domainEntities = SequelizeOrdersMapper.toDomainEntities(ormEntity);
-    }
-
-    return { data: domainEntities, count: count.length };
+    return { data: ormEntity, count: count.length };
   }
 
   async findFull(
@@ -83,10 +77,11 @@ export class OrdersSequelizeRepositoryAdapter implements OrdersRepository {
     const ormEntity: Optional<SequelizeOrders[]> =
       await this.repository.findAll({
         where,
+        include: [SequelizeItems],
         order: [['created_at', 'DESC']],
       });
 
-    return SequelizeOrdersMapper.toDomainEntities(ormEntity);
+    return ormEntity;
   }
 
   async findOne(
@@ -96,21 +91,14 @@ export class OrdersSequelizeRepositoryAdapter implements OrdersRepository {
 
     const ormEntity: Optional<SequelizeOrders> = await this.repository.findOne({
       where,
+      include: [SequelizeItems],
     });
 
-    return SequelizeOrdersMapper.toDomainEntity(ormEntity);
+    return ormEntity;
   }
 
   async findById(id: string): Promise<Orders> {
-    let domainEntity: Optional<Orders>;
-    const ormEntity: Optional<SequelizeOrders> =
-      await this.repository.findByPk(id);
-
-    if (ormEntity) {
-      domainEntity = SequelizeOrdersMapper.toDomainEntity(ormEntity);
-    }
-
-    return domainEntity;
+    return this.repository.findByPk(id);
   }
 
   private extendQueryWithByProperties(filter: OrdersRepositoryFilter): any {

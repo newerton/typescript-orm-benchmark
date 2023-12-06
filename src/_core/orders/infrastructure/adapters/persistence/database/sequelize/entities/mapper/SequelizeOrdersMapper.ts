@@ -2,7 +2,7 @@ import { randomUUID } from 'crypto';
 
 import { Orders } from '@core/orders/domain/entity';
 
-import { SequelizeOrders } from '../Orders';
+import { SequelizeOrders } from '../Orders.entity';
 
 export class SequelizeOrdersMapper {
   public static toOrmEntity(domain: Orders): SequelizeOrders {

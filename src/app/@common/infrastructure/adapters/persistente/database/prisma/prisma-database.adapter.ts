@@ -20,20 +20,27 @@ export class PrismaDatabaseAdapter
   private readonly logger = new Logger(PrismaDatabaseAdapter.name);
 
   constructor() {
-    super({
-      log: [
-        { emit: 'event', level: 'query' },
-        { emit: 'event', level: 'info' },
-        { emit: 'event', level: 'warn' },
-        { emit: 'event', level: 'error' },
-      ],
-      errorFormat: 'pretty',
+    const optionsSuper: Prisma.PrismaClientOptions = {
+      log: [],
+      errorFormat: 'minimal',
       datasources: {
         db: {
           url: DATABASE_URL,
         },
       },
-    });
+    };
+
+    if (DatabaseServerConfig.LOGGING) {
+      optionsSuper.log = [
+        { emit: 'event', level: 'query' },
+        { emit: 'event', level: 'info' },
+        { emit: 'event', level: 'warn' },
+        { emit: 'event', level: 'error' },
+      ];
+      optionsSuper.errorFormat = 'pretty';
+    }
+
+    super(optionsSuper);
   }
 
   async onModuleInit() {

@@ -1,4 +1,5 @@
 import {
+  BelongsToMany,
   Column,
   IsDate,
   IsUUID,
@@ -7,7 +8,9 @@ import {
   Table,
 } from 'sequelize-typescript';
 
+import { SequelizeItems } from '@core/items/infrastructure/adapters/persistence/database/sequelize/entities';
 import { Orders } from '@core/orders/domain/entity';
+import { SequelizeOrdersItems } from '@core/orders_items/infrastructure/adapters/persistence/database/sequelize/entities';
 
 @Table({ modelName: 'orders', timestamps: false })
 export class SequelizeOrders extends Model<Orders> {
@@ -22,4 +25,7 @@ export class SequelizeOrders extends Model<Orders> {
   @IsDate
   @Column('created_at')
   created_at: Date;
+
+  @BelongsToMany(() => SequelizeItems, () => SequelizeOrdersItems)
+  items: SequelizeItems[];
 }

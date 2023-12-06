@@ -1,1 +1,1 @@
-export * from './typeorm-database.adapter';
+export * from './sequelize-database.adapter';

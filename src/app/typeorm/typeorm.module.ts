@@ -5,9 +5,15 @@ import {
 } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 
+import { ItemsDITokens } from '@core/items/domain/di';
+import { TypeOrmItems } from '@core/items/infrastructure/adapters/persistence/database/typeorm/entities';
+import { ItemsTypeOrmRepositoryAdapter } from '@core/items/infrastructure/adapters/persistence/database/typeorm/repository';
 import { OrdersDITokens } from '@core/orders/domain/di';
 import { TypeOrmOrders } from '@core/orders/infrastructure/adapters/persistence/database/typeorm/entities';
 import { OrdersTypeOrmRepositoryAdapter } from '@core/orders/infrastructure/adapters/persistence/database/typeorm/repository';
+import { OrdersItemsDITokens } from '@core/orders_items/domain/di';
+import { TypeOrmOrdersItems } from '@core/orders_items/infrastructure/adapters/persistence/database/typeorm/entities';
+import { OrdersItemsTypeOrmRepositoryAdapter } from '@core/orders_items/infrastructure/adapters/persistence/database/typeorm/repository';
 
 import {
   CreateOrdersController,
@@ -37,7 +43,22 @@ const persistenceProviders: Provider[] = [
       ),
     inject: [getDataSourceToken()],
   },
+  {
+    provide: ItemsDITokens.ItemsRepository,
+    useFactory: (dataSource: DataSource) =>
+      new ItemsTypeOrmRepositoryAdapter(dataSource.getRepository(TypeOrmItems)),
+    inject: [getDataSourceToken()],
+  },
+  {
+    provide: OrdersItemsDITokens.OrdersItemsRepository,
+    useFactory: (dataSource: DataSource) =>
+      new OrdersItemsTypeOrmRepositoryAdapter(
+        dataSource.getRepository(TypeOrmOrdersItems),
+      ),
+    inject: [getDataSourceToken()],
+  },
 ];
+
 const useCaseProviders: Provider[] = [
   CreateOrdersUseCase,
   DeleteOrdersUseCase,

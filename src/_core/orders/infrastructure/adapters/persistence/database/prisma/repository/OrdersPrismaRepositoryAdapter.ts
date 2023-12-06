@@ -45,6 +45,7 @@ export class OrdersPrismaRepositoryAdapter implements OrdersRepository {
     const [data, count] = await prisma.$transaction([
       this.model.findMany({
         where,
+        include: { ordersItems: { include: { items: true } } },
         orderBy: { created_at: 'desc' },
         skip,
         take,
@@ -73,7 +74,10 @@ export class OrdersPrismaRepositoryAdapter implements OrdersRepository {
     filter: OrdersRepositoryFilter,
   ): Promise<OrdersRepositoryOutput> {
     const where = this.extendQueryWithByProperties(filter);
-    return this.model.findFirst({ where });
+    return this.model.findFirst({
+      where,
+      include: { ordersItems: { include: { items: true } } },
+    });
   }
 
   async update(

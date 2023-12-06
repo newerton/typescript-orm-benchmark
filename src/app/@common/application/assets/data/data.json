@@ -1,0 +1,17 @@
+{
+  "user": "Joe Doe",
+  "items": [
+    {
+      "name": "Item 1",
+      "value": 10.0
+    },
+    {
+      "name": "Item 2",
+      "value": 20.0
+    },
+    {
+      "name": "Item 3",
+      "value": 30.0
+    }
+  ]
+}

@@ -44,8 +44,6 @@ export class OrdersTypeOrmRepositoryAdapter implements OrdersRepository {
     limit: number,
     filter: OrdersRepositoryFilter,
   ): Promise<OrdersRepositoryCountOutput> {
-    let domainEntities: Optional<Orders[]>;
-
     const skip = limit * (page - 1);
     const take = limit;
 
@@ -55,16 +53,13 @@ export class OrdersTypeOrmRepositoryAdapter implements OrdersRepository {
 
     const ormEntity: Optional<TypeOrmOrders[]> = await query
       .orderBy({ created_at: 'DESC' })
+      .innerJoinAndSelect(`${this.tableAlias}.items`, 'items')
       .offset(skip)
       .limit(take)
       .getMany();
     const count = await query.getCount();
 
-    if (ormEntity) {
-      domainEntities = TypeOrmOrdersMapper.toDomainEntities(ormEntity);
-    }
-
-    return { data: domainEntities, count };
+    return { data: ormEntity, count };
   }
 
   async findFull(
@@ -78,7 +73,7 @@ export class OrdersTypeOrmRepositoryAdapter implements OrdersRepository {
       .orderBy({ created_at: 'DESC' })
       .getMany();
 
-    return TypeOrmOrdersMapper.toDomainEntities(ormEntity);
+    return ormEntity;
   }
 
   async findOne(
@@ -88,9 +83,11 @@ export class OrdersTypeOrmRepositoryAdapter implements OrdersRepository {
 
     this.extendQueryWithByProperties(filter, query);
 
-    const ormEntity: Optional<TypeOrmOrders> = await query.getOne();
+    const ormEntity: Optional<TypeOrmOrders> = await query
+      .innerJoinAndSelect(`${this.tableAlias}.items`, 'items')
+      .getOne();
 
-    return TypeOrmOrdersMapper.toDomainEntity(ormEntity);
+    return ormEntity;
   }
 
   async findById(id: string): Promise<Optional<Orders>> {
