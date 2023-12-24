@@ -3,7 +3,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { OrdersDITokens } from '@core/orders/domain/di';
 import { OrdersRepository } from '@core/orders/domain/port/repository';
 
-import { FilterOrdersDto, ListAllOrdersPagedOutputDto } from '../dto';
+import { FilterOrdersDrizzleDto, ListAllOrdersPagedOutputDto } from '../dto';
 
 @Injectable()
 export class ListAllOrdersUseCase {
@@ -13,7 +13,7 @@ export class ListAllOrdersUseCase {
   ) {}
 
   async execute(
-    filter: FilterOrdersDto,
+    filter: FilterOrdersDrizzleDto,
     queryPage = 1,
   ): Promise<ListAllOrdersPagedOutputDto> {
     const page = (queryPage && Number(queryPage)) || 1;

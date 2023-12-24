@@ -10,7 +10,7 @@ import {
 import { ErrorSchema } from '@app/@common/application/documentations/openapi/swagger/error.schema';
 import { ZodValidationPipe } from '@app/@common/application/pipes';
 
-import { FilterOrdersDto, FullListOrdersOutputDto } from '../dto';
+import { FilterOrdersSequelizeDto, FullListOrdersSequelizeOutputDto } from '../dto';
 import { FullListOrdersUseCase } from '../use-cases';
 import { OrdersQueryFilterSchemaValidation } from '../validations';
 
@@ -32,7 +32,7 @@ export class FullListOrdersController {
   })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: FullListOrdersOutputDto,
+    type: FullListOrdersSequelizeOutputDto,
     description: 'List of orders and count',
   })
   async execute(
@@ -40,8 +40,8 @@ export class FullListOrdersController {
       'filter',
       new ZodValidationPipe(new OrdersQueryFilterSchemaValidation()),
     )
-    filter: FilterOrdersDto,
-  ): Promise<FullListOrdersOutputDto[]> {
+    filter: FilterOrdersSequelizeDto,
+  ): Promise<FullListOrdersSequelizeOutputDto[]> {
     return this.useCase.execute(filter);
   }
 }

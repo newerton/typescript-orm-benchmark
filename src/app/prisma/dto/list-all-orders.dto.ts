@@ -2,7 +2,7 @@ import { randomUUID } from 'crypto';
 
 import { ApiProperty } from '@nestjs/swagger';
 
-export class ListAllOrdersOutputDto {
+export class ListAllOrdersPrismaOutputDto {
   @ApiProperty({ type: 'string', example: randomUUID() })
   id: string;
 
@@ -14,8 +14,8 @@ export class ListAllOrdersOutputDto {
 }
 
 export class ListAllOrdersPagedOutputDto {
-  @ApiProperty({ type: [ListAllOrdersOutputDto] })
-  data: ListAllOrdersOutputDto[];
+  @ApiProperty({ type: [ListAllOrdersPrismaOutputDto] })
+  data: ListAllOrdersPrismaOutputDto[];
 
   @ApiProperty({ type: 'number', example: 100 })
   count: number;

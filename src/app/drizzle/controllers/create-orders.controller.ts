@@ -12,7 +12,7 @@ import { ErrorSchema } from '@app/@common/application/documentations/openapi/swa
 import { ZodValidationPipe } from '@app/@common/application/pipes';
 import { OrdersRepositoryOutput } from '@core/orders/domain/port/repository';
 
-import { CreateOrdersInputDto } from '../dto';
+import { CreateOrdersDrizzleInputDto } from '../dto';
 import { CreateOrdersUseCase } from '../use-cases';
 import { CreateOrdersSchemaValidation } from '../validations';
 
@@ -30,13 +30,13 @@ export class CreateOrdersController {
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({ summary: 'Create a new order' })
   @ApiBody({
-    type: CreateOrdersInputDto,
     description: 'Create order input',
+    type: CreateOrdersDrizzleInputDto,
   })
   @ApiResponse({ status: HttpStatus.CREATED, description: 'Created' })
   async execute(
     @Body(new ZodValidationPipe(new CreateOrdersSchemaValidation()))
-    body: CreateOrdersInputDto,
+    body: CreateOrdersDrizzleInputDto,
   ): Promise<OrdersRepositoryOutput> {
     return this.useCase.execute(body);
   }

@@ -1,36 +1,15 @@
-import {
-  Injectable,
-  Logger,
-  OnModuleDestroy,
-  OnModuleInit,
-} from '@nestjs/common';
-import { drizzle } from 'drizzle-orm/node-postgres';
-import { Client } from 'pg';
+import { NodePgDatabase, drizzle } from 'drizzle-orm/node-postgres';
 
-import { DatabaseServerConfig } from '@core/@shared/infrastructure/config/env';
+import { drizzleClient } from '@core/@shared/infrastructure/adapters/persistence/database/drizzle/client';
+import * as schemas from '@core/@shared/infrastructure/adapters/persistence/database/drizzle/schemas';
 
-@Injectable()
-export class DrizzleDatabaseAdapter implements OnModuleInit, OnModuleDestroy {
-  private readonly logger = new Logger(DrizzleDatabaseAdapter.name);
-  private client: Client;
-
-  constructor() {}
-
-  async onModuleInit() {
-    this.client = new Client({
-      host: DatabaseServerConfig.HOST,
-      port: DatabaseServerConfig.PORT,
-      user: DatabaseServerConfig.USER,
-      password: DatabaseServerConfig.PASSWORD,
-      database: DatabaseServerConfig.DATABASE,
-    });
-
-    await this.client.connect();
-
-    return drizzle(this.client);
-  }
-
-  async onModuleDestroy() {
-    await this.client.end();
-  }
-}
+export const drizzleDatabaseAdapter = [
+  {
+    provide: 'DRIZZLE_DATABASE_ADAPTER',
+    useFactory: async (): Promise<NodePgDatabase<typeof schemas>> => {
+      const client = drizzleClient();
+      return drizzle(client, { schema: schemas });
+    },
+    exports: ['DRIZZLE_DATABASE_ADAPTER'],
+  },
+];

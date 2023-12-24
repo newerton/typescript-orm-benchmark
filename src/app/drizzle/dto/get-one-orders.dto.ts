@@ -2,7 +2,7 @@ import { randomUUID } from 'crypto';
 
 import { ApiProperty } from '@nestjs/swagger';
 
-export class GetOneOrdersOutputDto {
+export class GetOneOrdersDrizzleOutputDto {
   @ApiProperty({ type: 'string', example: randomUUID() })
   id: string;
 

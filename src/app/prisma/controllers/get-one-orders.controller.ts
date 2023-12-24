@@ -10,7 +10,7 @@ import {
 import { ErrorSchema } from '@app/@common/application/documentations/openapi/swagger/error.schema';
 import { ZodValidationPipe } from '@app/@common/application/pipes';
 
-import { FilterOrdersDto, GetOneOrdersOutputDto } from '../dto';
+import { FilterOrdersPrismaDto, GetOneOrdersPrismaOutputDto } from '../dto';
 import { GetOneOrdersUseCase } from '../use-cases';
 import { OrdersQueryFilterSchemaValidation } from '../validations';
 
@@ -32,7 +32,7 @@ export class GetOneOrdersController {
   })
   @ApiResponse({
     status: HttpStatus.OK,
-    type: GetOneOrdersOutputDto,
+    type: GetOneOrdersPrismaOutputDto,
     description: 'Orders found',
   })
   async execute(
@@ -40,8 +40,8 @@ export class GetOneOrdersController {
       'filter',
       new ZodValidationPipe(new OrdersQueryFilterSchemaValidation()),
     )
-    filter: FilterOrdersDto,
-  ): Promise<GetOneOrdersOutputDto> {
+    filter: FilterOrdersPrismaDto,
+  ): Promise<GetOneOrdersPrismaOutputDto> {
     return this.useCase.execute(filter);
   }
 }

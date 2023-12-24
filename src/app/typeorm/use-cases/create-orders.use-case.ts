@@ -10,7 +10,7 @@ import {
 import { OrdersItemsDITokens } from '@core/orders_items/domain/di';
 import { OrdersItemsRepository } from '@core/orders_items/domain/port/repository';
 
-import { CreateOrdersInputDto } from '../dto';
+import { CreateOrdersTypeOrmInputDto } from '../dto';
 
 @Injectable()
 export class CreateOrdersUseCase {
@@ -26,7 +26,7 @@ export class CreateOrdersUseCase {
   ) {}
 
   async execute(
-    payload: CreateOrdersInputDto,
+    payload: CreateOrdersTypeOrmInputDto,
   ): Promise<OrdersRepositoryOutput> {
     const order = await this.orderRepository.create(payload);
 

@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class FilterOrdersDto {
+export class FilterOrdersDrizzleDto {
   @ApiProperty({
     type: 'string',
     name: 'filter[user]',

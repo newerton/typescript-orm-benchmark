@@ -1,14 +1,14 @@
 import { Module, Provider } from '@nestjs/common';
-import { PrismaClient } from '@prisma/client';
+import { NodePgDatabase } from 'drizzle-orm/node-postgres';
 
 import { DatabaseModule } from '@app/@common/infrastructure/adapters/persistente/database/database.module';
-import { DrizzleDatabaseAdapter } from '@app/@common/infrastructure/adapters/persistente/database/drizzle';
+import * as schemas from '@core/@shared/infrastructure/adapters/persistence/database/drizzle/schemas';
 import { ItemsDITokens } from '@core/items/domain/di';
-import { ItemsPrismaRepositoryAdapter } from '@core/items/infrastructure/adapters/persistence/database/prisma/repository';
+import { ItemsDrizzleRepositoryAdapter } from '@core/items/infrastructure/adapters/persistence/database/drizzle/repository';
 import { OrdersDITokens } from '@core/orders/domain/di';
-import { OrdersPrismaRepositoryAdapter } from '@core/orders/infrastructure/adapters/persistence/database/prisma/repository';
+import { OrdersDrizzleRepositoryAdapter } from '@core/orders/infrastructure/adapters/persistence/database/drizzle/repository';
 import { OrdersItemsDITokens } from '@core/orders_items/domain/di';
-import { OrdersItemsPrismaRepositoryAdapter } from '@core/orders_items/infrastructure/adapters/persistence/database/prisma/repository';
+import { OrdersItemsDrizzleRepositoryAdapter } from '@core/orders_items/infrastructure/adapters/persistence/database/drizzle/repository';
 
 import {
   CreateOrdersController,
@@ -32,23 +32,24 @@ import {
 const persistenceProviders: Provider[] = [
   {
     provide: OrdersDITokens.OrdersRepository,
-    useFactory: (prisma: PrismaClient) =>
-      new OrdersPrismaRepositoryAdapter(prisma.orders),
-    inject: [DrizzleDatabaseAdapter],
+    useFactory: (db: NodePgDatabase<typeof schemas>) =>
+      new OrdersDrizzleRepositoryAdapter(db),
+    inject: ['DRIZZLE_DATABASE_ADAPTER'],
   },
   {
     provide: ItemsDITokens.ItemsRepository,
-    useFactory: (prisma: PrismaClient) =>
-      new ItemsPrismaRepositoryAdapter(prisma.items),
-    inject: [DrizzleDatabaseAdapter],
+    useFactory: (db: NodePgDatabase<typeof schemas>) =>
+      new ItemsDrizzleRepositoryAdapter(db),
+    inject: ['DRIZZLE_DATABASE_ADAPTER'],
   },
   {
     provide: OrdersItemsDITokens.OrdersItemsRepository,
-    useFactory: (prisma: PrismaClient) =>
-      new OrdersItemsPrismaRepositoryAdapter(prisma.ordersItems),
-    inject: [DrizzleDatabaseAdapter],
+    useFactory: (db: NodePgDatabase<typeof schemas>) =>
+      new OrdersItemsDrizzleRepositoryAdapter(db),
+    inject: ['DRIZZLE_DATABASE_ADAPTER'],
   },
 ];
+
 const useCaseProviders: Provider[] = [
   CreateOrdersUseCase,
   DeleteOrdersUseCase,
@@ -73,4 +74,4 @@ const useCaseProviders: Provider[] = [
   providers: [...persistenceProviders, ...useCaseProviders],
   exports: [],
 })
-export class PrismaModule {}
+export class DrizzleModule {}

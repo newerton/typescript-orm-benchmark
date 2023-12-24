@@ -1,9 +1,17 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class CreateOrdersInputDto {
+export class CreateOrdersTypeOrmInputDto {
   @ApiProperty({ type: 'string', example: 'Joe Doe' })
   user: string;
 
-  @ApiProperty({ type: 'array', items: { type: 'object' } })
+  @ApiProperty({
+    type: 'array',
+    example: [
+      {
+        name: 'Item 1',
+        value: 10,
+      },
+    ],
+  })
   items: Array<{ name: string; value: number }>;
 }

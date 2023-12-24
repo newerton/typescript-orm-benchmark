@@ -2,7 +2,7 @@ import { randomUUID } from 'crypto';
 
 import { ApiProperty } from '@nestjs/swagger';
 
-export class FullListOrdersOutputDto {
+export class FullListOrdersPrismaOutputDto {
   @ApiProperty({ type: 'string', example: randomUUID() })
   id: string;
 

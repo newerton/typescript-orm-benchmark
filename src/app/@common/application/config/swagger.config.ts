@@ -21,7 +21,6 @@ export const applySwagger = (app: INestApplication) => {
   const customOptions: SwaggerCustomOptions = {
     customSiteTitle: 'ORM Benchmark Docs',
     customCss: theme.getBuffer('dark'),
-    explorer: true,
     swaggerOptions: {
       persistAuthorization: true,
       tagsSorter: 'alpha',

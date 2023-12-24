@@ -11,7 +11,7 @@ import {
 import { ErrorSchema } from '@app/@common/application/documentations/openapi/swagger/error.schema';
 import { ZodValidationPipe } from '@app/@common/application/pipes';
 
-import { FilterOrdersDto, ListAllOrdersPagedOutputDto } from '../dto';
+import { FilterOrdersSequelizeDto, ListAllOrdersPagedOutputDto } from '../dto';
 import { ListAllOrdersUseCase } from '../use-cases';
 import { OrdersQueryFilterSchemaValidation } from '../validations';
 
@@ -48,7 +48,7 @@ export class ListAllOrdersController {
       'filter',
       new ZodValidationPipe(new OrdersQueryFilterSchemaValidation()),
     )
-    filter: FilterOrdersDto,
+    filter: FilterOrdersSequelizeDto,
     @Query('page') page: number,
   ): Promise<ListAllOrdersPagedOutputDto> {
     return this.useCase.execute(filter, page);

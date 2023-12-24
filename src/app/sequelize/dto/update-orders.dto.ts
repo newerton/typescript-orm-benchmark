@@ -1,11 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class UpdateOrdersInputDto {
+export class UpdateOrdersSequelizeInputDto {
   @ApiProperty({ type: 'string' })
   user?: string;
 }
 
-export class UpdateOrdersOutputDto {
+export class UpdateOrdersSequelizeOutputDto {
   @ApiProperty({ type: 'string' })
   id: string;
 

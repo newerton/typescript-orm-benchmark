@@ -6,7 +6,10 @@ import {
   OrdersRepositoryInput,
 } from '@core/orders/domain/port/repository';
 
-import { UpdateOrdersInputDto, UpdateOrdersOutputDto } from '../dto';
+import {
+  UpdateOrdersPrismaInputDto,
+  UpdateOrdersPrismaOutputDto,
+} from '../dto';
 
 @Injectable()
 export class UpdateOrdersUseCase {
@@ -17,8 +20,8 @@ export class UpdateOrdersUseCase {
 
   async execute(
     id: string,
-    data: UpdateOrdersInputDto,
-  ): Promise<UpdateOrdersOutputDto> {
+    data: UpdateOrdersPrismaInputDto,
+  ): Promise<UpdateOrdersPrismaOutputDto> {
     const payload = {} as OrdersRepositoryInput;
 
     if ('user' in data) {

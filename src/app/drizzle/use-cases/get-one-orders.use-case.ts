@@ -3,7 +3,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { OrdersDITokens } from '@core/orders/domain/di';
 import { OrdersRepository } from '@core/orders/domain/port/repository';
 
-import { FilterOrdersDto, GetOneOrdersOutputDto } from '../dto';
+import { FilterOrdersDrizzleDto, GetOneOrdersDrizzleOutputDto } from '../dto';
 
 @Injectable()
 export class GetOneOrdersUseCase {
@@ -12,7 +12,7 @@ export class GetOneOrdersUseCase {
     private readonly repository: OrdersRepository,
   ) {}
 
-  async execute(filter: FilterOrdersDto): Promise<GetOneOrdersOutputDto> {
+  async execute(filter: FilterOrdersDrizzleDto): Promise<GetOneOrdersDrizzleOutputDto> {
     return this.repository.findOne(filter);
   }
 }

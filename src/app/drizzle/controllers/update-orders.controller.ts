@@ -18,7 +18,7 @@ import { ErrorSchema } from '@app/@common/application/documentations/openapi/swa
 import { ZodValidationPipe } from '@app/@common/application/pipes';
 import { UUIDSchemaValidation } from '@app/@common/application/validations';
 
-import { UpdateOrdersInputDto } from '../dto';
+import { UpdateOrdersDrizzleInputDto } from '../dto';
 import { UpdateOrdersUseCase } from '../use-cases';
 import { UpdateOrdersSchemaValidation } from '../validations';
 
@@ -42,7 +42,7 @@ export class UpdateOrdersController {
   async execute(
     @Param('id', new ZodValidationPipe(new UUIDSchemaValidation())) id: string,
     @Body(new ZodValidationPipe(new UpdateOrdersSchemaValidation()))
-    body: UpdateOrdersInputDto,
+    body: UpdateOrdersDrizzleInputDto,
   ): Promise<void> {
     await this.useCase.execute(id, body);
   }

@@ -16,7 +16,7 @@ import {
 import { ErrorSchema } from '@app/@common/application/documentations/openapi/swagger/error.schema';
 import { ZodValidationPipe } from '@app/@common/application/pipes';
 
-import { FilterOrdersDto } from '../dto';
+import { FilterOrdersDrizzleDto } from '../dto';
 import { DeleteManyOrdersUseCase } from '../use-cases';
 import { OrdersQueryFilterSchemaValidation } from '../validations';
 
@@ -42,7 +42,7 @@ export class DeleteManyOrdersController {
       'filter',
       new ZodValidationPipe(new OrdersQueryFilterSchemaValidation()),
     )
-    filter: FilterOrdersDto,
+    filter: FilterOrdersDrizzleDto,
   ): Promise<void> {
     return this.useCase.execute(filter);
   }

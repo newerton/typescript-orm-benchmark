@@ -3,7 +3,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { OrdersDITokens } from '@core/orders/domain/di';
 import { OrdersRepository } from '@core/orders/domain/port/repository';
 
-import { FilterOrdersDto } from '../dto';
+import { FilterOrdersTypeOrmDto } from '../dto';
 
 @Injectable()
 export class DeleteManyOrdersUseCase {
@@ -12,7 +12,7 @@ export class DeleteManyOrdersUseCase {
     private readonly repository: OrdersRepository,
   ) {}
 
-  async execute(filter: FilterOrdersDto): Promise<any> {
+  async execute(filter: FilterOrdersTypeOrmDto): Promise<any> {
     return this.repository.deleteMany(filter);
   }
 }

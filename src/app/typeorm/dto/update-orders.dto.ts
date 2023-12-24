@@ -1,11 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class UpdateOrdersInputDto {
+export class UpdateOrdersTypeOrmInputDto {
   @ApiProperty({ type: 'string' })
   user?: string;
 }
 
-export class UpdateOrdersOutputDto {
+export class UpdateOrdersTypeOrmOutputDto {
   @ApiProperty({ type: 'string' })
   id: string;
 

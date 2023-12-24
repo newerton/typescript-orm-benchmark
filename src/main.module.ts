@@ -11,6 +11,7 @@ import {
 import { HttpLoggingInterceptor } from '@app/@common/application/interceptors';
 import { sequelizeOptions } from '@app/@common/infrastructure/adapters/persistente/database/sequelize';
 import { dataSourceOptions } from '@app/@common/infrastructure/adapters/persistente/database/typeorm';
+import { DrizzleModule } from '@app/drizzle/drizzle.module';
 import { PrismaModule } from '@app/prisma/prisma.module';
 import { SequelizeModule } from '@app/sequelize/sequelize.module';
 import { TypeOrmModule } from '@app/typeorm/typeorm.module';
@@ -43,6 +44,7 @@ if (ApiServerConfig.LOG_ENABLE) {
     }),
     NestJsTypeOrmModule.forRoot(dataSourceOptions),
     NestJsSequelizeModule.forRoot(sequelizeOptions),
+    DrizzleModule,
     PrismaModule,
     SequelizeModule,
     TypeOrmModule,
